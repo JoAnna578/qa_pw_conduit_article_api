@@ -5,7 +5,6 @@ test.use({ usersNumber: 2 });
 
 test.describe('Read Article', () => {
   test('Read existing article by unauthorized user', async ({
-    registeredUsers,
     userRequests,
     unauthenticatedRequest,
   }) => {
@@ -35,7 +34,6 @@ test.describe('Read Article', () => {
   });
 
   test('Read article created by user1 as authorized user2', async ({
-    registeredUsers,
     userRequests,
   }) => {
     const articlesApiUser1 = new ArticlesApi(userRequests[0]);

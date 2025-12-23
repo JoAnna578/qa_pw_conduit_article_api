@@ -4,10 +4,7 @@ import { test } from '../../_fixtures/fixtures';
 test.use({ usersNumber: 2 });
 
 test.describe('Create Article', () => {
-  test('Create article with empty tags array', async ({
-    registeredUsers,
-    userRequests,
-  }) => {
+  test('Create article with empty tags array', async ({ userRequests }) => {
     const userRequest = userRequests[0];
     const articlesApi = new ArticlesApi(userRequest);
 

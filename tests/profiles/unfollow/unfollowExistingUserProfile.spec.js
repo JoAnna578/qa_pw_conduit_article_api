@@ -3,35 +3,37 @@ import { test } from '../../_fixtures/fixtures';
 
 test.use({ usersNumber: 2 });
 
-test.describe('Follow Profile', () => {
-  test('Follow existing user by other user', async ({
+test.describe('Unfollow Profile', () => {
+  test('Unfollow existing user profile', async ({
     registeredUsers,
     userRequests,
   }) => {
-    const user1 = registeredUsers[0]; // target
-    const user2Request = userRequests[1]; // actor
-
+    const user1 = registeredUsers[0];
+    const user2Request = userRequests[1];
     const profilesApi = new ProfilesApi(user2Request);
-    const response = await profilesApi.followProfile(user1.username);
+
+    // ensure user2 is following user1 first
+    await profilesApi.followProfile(user1.username);
+
+    const response = await profilesApi.unfollowProfile(user1.username);
 
     await profilesApi.assertSuccessResponseCode(response);
-    await profilesApi.assertUsernameHasCorrectValue(response, user1.username);
-    await profilesApi.assertFollowingHasValueTrue(response);
+    await profilesApi.assertFollowingHasValueFalse(response);
   });
 
-  test('Follow non-existing user profile', async ({ userRequests }) => {
+  test('Unfollow non-existing user profile', async ({ userRequests }) => {
     const profilesApi = new ProfilesApi(userRequests[0]);
-    const response = await profilesApi.followProfile('nonexistentuser');
+    const response = await profilesApi.unfollowProfile('nonexistentuser');
 
     await profilesApi.assertNotFoundResponseCode(response);
   });
 
-  test('Follow existing user with empty auth token', async ({
+  test('Unfollow existing user with empty auth token', async ({
     unauthenticatedRequest,
     registeredUsers,
   }) => {
     const profilesApi = new ProfilesApi(unauthenticatedRequest);
-    const response = await profilesApi.followProfile(
+    const response = await profilesApi.unfollowProfile(
       registeredUsers[0].username,
     );
 
